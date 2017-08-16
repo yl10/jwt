@@ -39,9 +39,9 @@ func NewJwtServer(appid string, key interface{}, position TokenPosition, method 
 }
 
 //NewJwtServerHS256 创建一个新HS256JWT服务
-func NewJwtServerHS256(appid string, key interface{}, position TokenPosition, expires time.Duration) *JwtServer {
+func NewJwtServerHS256(appid string, key string, position TokenPosition, expires time.Duration) *JwtServer {
 	return &JwtServer{
-		appid, key, position, jwt.SigningMethodHS256, expires,
+		appid, []byte(key), position, jwt.SigningMethodHS256, expires,
 	}
 }
 
@@ -52,10 +52,18 @@ type UserInfo struct {
 	LoginFrom string `json:"loginfrom"`
 }
 
+func (u UserInfo) GetKind() string {
+	return u.LoginKind
+}
+
+func (u UserInfo) GetID() string {
+	return u.LoginID
+}
+
 //LoginUser 登录用户接口
 type LoginUser interface {
-	LoginKind() string
-	LoginID() string
+	GetKind() string
+	GetID() string
 	// CheckUser() bool
 }
 
@@ -80,8 +88,8 @@ func (j JwtServer) newYlClaims(user LoginUser) YlClaims {
 			Id:        uuid.New(),
 		},
 		UserInfo{
-			LoginKind: user.LoginKind(),
-			LoginID:   user.LoginID(),
+			LoginKind: user.GetKind(),
+			LoginID:   user.GetID(),
 			LoginFrom: j.appID,
 		},
 	}
