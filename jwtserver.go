@@ -1,6 +1,7 @@
 package yljwt
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -48,7 +49,7 @@ type UserInfo struct {
 type LoginUser interface {
 	LoginKind() string
 	LoginID() string
-	CheckUser() bool
+	// CheckUser() bool
 }
 
 //YlClaims yl声明
@@ -158,7 +159,10 @@ func (j JwtServer) CheckToken(r *http.Request, checkuser func(user UserInfo) boo
 	user.LoginKind = yc.LoginKind
 
 	if checkuser != nil {
-		checkuser(user)
+		if !checkuser(user) {
+			err = fmt.Errorf("用户校验未通过")
+			return
+		}
 	}
 	return
 
