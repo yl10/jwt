@@ -38,6 +38,13 @@ func NewJwtServer(appid string, key interface{}, position TokenPosition, method 
 	}
 }
 
+//NewJwtServerHS256 创建一个新HS256JWT服务
+func NewJwtServerHS256(appid string, key interface{}, position TokenPosition, expires time.Duration) *JwtServer {
+	return &JwtServer{
+		appid, key, position, jwt.SigningMethodHS256, expires,
+	}
+}
+
 //UserInfo 用户信息
 type UserInfo struct {
 	LoginKind string `json:"loginkind"`
