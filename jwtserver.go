@@ -151,9 +151,14 @@ func (j JwtServer) CheckToken(r *http.Request, checkuser func(user UserInfo) boo
 		return
 	}
 
-	token, err := jwt.Parse(tokenstring, func(token *jwt.Token) (interface{}, error) {
+	// token, err := jwt.Parse(tokenstring, func(token *jwt.Token) (interface{}, error) {
+	// 	return j.key, nil
+	// })
+
+	token, err := jwt.ParseWithClaims(tokenstring, &YlClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return j.key, nil
 	})
+
 	if err != nil {
 		return
 	}
