@@ -162,7 +162,7 @@ func (j JwtServer) CheckToken(r *http.Request, checkuser func(user UserInfo) boo
 	if err != nil {
 		return
 	}
-	yc := token.Claims.(YlClaims)
+	yc := token.Claims.(*YlClaims)
 	//检查过期
 	if yc.VerifyExpiresAt(time.Now().Unix(), true) == false {
 		err = ErrTokenOut
