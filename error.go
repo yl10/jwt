@@ -16,7 +16,7 @@ var errMap = map[JWTError]string{
 	ErrNotFindCookie: "cookie中没有找到token，检查cookie中是否包含token节点",
 	ErrTokenOut:      "token已经过期",
 	ErrNoUserID:      "token中没有找到UserID",
-	ErrAppIDNotAllow："请求的来源不允许",
+	ErrAppIDNotAllow: "请求的来源不允许",
 }
 
 func (j JWTError) Error() string {
